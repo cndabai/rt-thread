@@ -32,6 +32,18 @@ if GetDepend(['UTEST_MUTEX_TC']):
 if GetDepend(['UTEST_MAILBOX_TC']):
     src += ['mailbox_tc.c']
 
+if GetDepend(['UTEST_THREAD_TC']):
+    src += ['thread_tc.c']
+
+if GetDepend(['UTEST_MEMPOOL_TC']):
+    src += ['memorypool_tc.c']
+
+if GetDepend(['UTEST_LIBC_SPRINTF_TC']):
+    src += ['sprintf_tc.c']
+
+if GetDepend(['UTEST_OBJECT_TC']):
+    src += ['object_tc.c']
+
 CPPPATH = [cwd]
 
 group = DefineGroup('utestcases', src, depend = [], CPPPATH = CPPPATH)

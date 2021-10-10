@@ -30,6 +30,7 @@ config UTEST_MESSAGEQUEUE_TC
 config UTEST_SIGNAL_TC
     bool "signal test"
     default n
+    depends on RT_USING_SIGNALS
 
 config UTEST_MUTEX_TC
     bool "mutex test"
@@ -38,5 +39,24 @@ config UTEST_MUTEX_TC
 config UTEST_MAILBOX_TC
     bool "mailbox test"
     default n
+
+config UTEST_THREAD_TC
+    bool "thread test"
+    default n
+
+config UTEST_MEMPOOL_TC
+    bool "memory pool test"
+    default n
+    depends on RT_USING_MEMPOOL
+
+config UTEST_LIBC_SPRINTF_TC
+    bool "kservice sprintf test"
+    default n
+    depends on RT_KSERVICE_USING_STDLIB
+
+config UTEST_OBJECT_TC
+    bool "object test"
+    default n
+
 
 endmenu
