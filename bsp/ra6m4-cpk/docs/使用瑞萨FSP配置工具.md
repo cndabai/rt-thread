@@ -159,3 +159,19 @@
 3. 修改通道号为 0，与 DAC0 对应
 
 ![img](picture/dac_config2.png)
+
+## CAN
+
+1. 添加CAN
+
+![image-20211102145023112](picture/can.png)
+
+2. 配置Callback为 `can0_callback` 或 `can1_callback`
+
+![image-20211102145227603](picture/can_callback.png)
+
+3. 配置其他选项，并生成代码。
+4. 使用ENV使能CAN。[CAN设备使用说明](https://www.rt-thread.org/document/site/#/rt-thread-version/rt-thread-standard/programming-manual/device/can/can)
+
+![image-20211102145613309](picture/can_menuconfig.png)
+
