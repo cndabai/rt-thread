@@ -12,15 +12,6 @@
 
 #include <sys/select.h>
 
-#ifdef __cplusplus
-extern "C" {
-#endif
-
-int select(int nfds, fd_set *readfds, fd_set *writefds, fd_set *exceptfds, struct timeval *timeout);
-
-#ifdef __cplusplus
-}
-#endif
+#warning "This file will be obsolete in the next version! Please use <sys/select.h> to instead."
 
 #endif
-

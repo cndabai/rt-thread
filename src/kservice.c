@@ -294,11 +294,11 @@ RTM_EXPORT(rt_memcpy);
  * address. If the destination memory does not overlap with the source memory,
  * the function is the same as memcpy().
  *
- * @param  dst is the address of destination memory, points to the copied content.
+ * @param  dest is the address of destination memory, points to the copied content.
  *
  * @param  src is the address of source memory, point to the data source to be copied.
  *
- * @param  count is the copied length.
+ * @param  n is the copied length.
  *
  * @return The address of destination memory.
  */
@@ -500,6 +500,28 @@ rt_int32_t rt_strcmp(const char *cs, const char *ct)
 RTM_EXPORT(rt_strcmp);
 
 /**
+ * This function will return the length of a string, which terminate will
+ * null character.
+ *
+ * @param  s is the string
+ *
+ * @return The length of string.
+ */
+rt_size_t rt_strlen(const char *s)
+{
+    const char *sc;
+
+    for (sc = s; *sc != '\0'; ++sc) /* nothing */
+        ;
+
+    return sc - s;
+}
+RTM_EXPORT(rt_strlen);
+
+#endif /* RT_KSERVICE_USING_STDLIB */
+
+#if !defined(RT_KSERVICE_USING_STDLIB) || defined(__ARMCC_VERSION)
+/**
  * The  strnlen()  function  returns the number of characters in the
  * string pointed to by s, excluding the terminating null byte ('\0'),
  * but at most maxlen.  In doing this, strnlen() looks only at the
@@ -522,27 +544,10 @@ rt_size_t rt_strnlen(const char *s, rt_ubase_t maxlen)
     return sc - s;
 }
 RTM_EXPORT(rt_strnlen);
-
-/**
- * This function will return the length of a string, which terminate will
- * null character.
- *
- * @param  s is the string
- *
- * @return The length of string.
- */
-rt_size_t rt_strlen(const char *s)
-{
-    const char *sc;
-
-    for (sc = s; *sc != '\0'; ++sc) /* nothing */
-        ;
-
-    return sc - s;
-}
-RTM_EXPORT(rt_strlen);
-
-#endif /* RT_KSERVICE_USING_STDLIB */
+#ifdef __ARMCC_VERSION
+rt_size_t strnlen(const char *s, rt_size_t maxlen) __attribute__((alias("rt_strnlen")));
+#endif /* __ARMCC_VERSION */
+#endif /* !defined(RT_KSERVICE_USING_STDLIB) || defined(__ARMCC_VERSION) */
 
 #ifdef RT_USING_HEAP
 /**
@@ -567,7 +572,7 @@ char *rt_strdup(const char *s)
 RTM_EXPORT(rt_strdup);
 #ifdef __ARMCC_VERSION
 char *strdup(const char *s) __attribute__((alias("rt_strdup")));
-#endif
+#endif /* __ARMCC_VERSION */
 #endif /* RT_USING_HEAP */
 
 /**
@@ -577,8 +582,8 @@ void rt_show_version(void)
 {
     rt_kprintf("\n \\ | /\n");
     rt_kprintf("- RT -     Thread Operating System\n");
-    rt_kprintf(" / | \\     %d.%d.%d build %s\n",
-               RT_VERSION, RT_SUBVERSION, RT_REVISION, __DATE__);
+    rt_kprintf(" / | \\     %d.%d.%d build %s %s\n",
+               RT_VERSION, RT_SUBVERSION, RT_REVISION, __DATE__, __TIME__);
     rt_kprintf(" 2006 - 2021 Copyright by rt-thread team\n");
 }
 RTM_EXPORT(rt_show_version);
@@ -590,9 +595,11 @@ RTM_EXPORT(rt_show_version);
 /**
  * This function will duplicate a string.
  *
- * @param  s the string to be duplicated
+ * @param  n is the string to be duplicated.
  *
- * @return the duplicated string pointer
+ * @param  base is support divide instructions value.
+ *
+ * @return the duplicated string pointer.
  */
 rt_inline int divide(long long *n, int base)
 {
@@ -1418,7 +1425,7 @@ void rt_assert_set_hook(void (*hook)(const char *ex, const char *func, rt_size_t
 /**
  * The RT_ASSERT function.
  *
- * @param ex is the assertion condition string.
+ * @param ex_string is the assertion condition string.
  *
  * @param func is the function name when assertion.
  *

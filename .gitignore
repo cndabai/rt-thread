@@ -10,6 +10,7 @@
 *.idb
 *.ilk
 *.old
+*.crf
 build
 Debug
 documentation/html
@@ -37,5 +38,7 @@ ncscope.*
 tags
 
 .idea
+.vscode
+.history
 CMakeLists.txt
 cmake-build-debug
