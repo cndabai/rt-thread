@@ -20,7 +20,7 @@ static void rw007_gpio_init(void)
     rt_pin_write(RW007_RST_PIN, PIN_HIGH);
 
     /* Wait rw007 ready(exit busy stat) */
-    while(!rt_pin_read(RW007_INT_BUSY_PIN))
+    while (!rt_pin_read(RW007_INT_BUSY_PIN))
     {
         rt_thread_delay(5);
     }
@@ -37,7 +37,7 @@ int wifi_spi_device_init(void)
     uint32_t cs_pin = RW007_CS_PIN;
 
     rw007_gpio_init();
-    rt_hw_spi_device_attach(&rw007_dev, "wspi", RW007_SPI_BUS_NAME, (void*)cs_pin );
+    rt_hw_spi_device_attach(&rw007_dev, "wspi", RW007_SPI_BUS_NAME, (void *)cs_pin);
     rt_hw_wifi_init("wspi");
 
     rt_wlan_set_mode(RT_WLAN_DEVICE_STA_NAME, RT_WLAN_STATION);
@@ -52,7 +52,7 @@ int wifi_spi_device_init(void)
 }
 INIT_APP_EXPORT(wifi_spi_device_init);
 
-static void int_wifi_irq(void * p)
+static void int_wifi_irq(void *p)
 {
     ((void)p);
     spi_wifi_isr(0);

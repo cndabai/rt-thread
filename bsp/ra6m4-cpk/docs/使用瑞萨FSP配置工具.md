@@ -209,8 +209,21 @@ GPT 定时器在该芯片中可作为通用定时器，也可以用于产生 PWM
 
    ![image-20211103202216381](picture/pwm_env.png)
 
+## CAN
 
+1. 添加CAN
 
+![image-20211102145023112](picture/can.png)
+
+2. 配置Callback为 `can0_callback` 或 `can1_callback`
+
+![image-20211102145227603](picture/can_callback.png)
+
+3. 配置其他选项，并生成代码。
+
+4. 使用ENV使能CAN。[CAN设备使用说明](https://www.rt-thread.org/document/site/#/rt-thread-version/rt-thread-standard/programming-manual/device/can/can)
+
+![image-20211102145613309](picture/can_menuconfig.png)
 
 
 ## 使用 WiFi 模块 [RW007 ](https://github.com/RT-Thread-packages/rw007) 
@@ -237,8 +250,6 @@ GPT 定时器在该芯片中可作为通用定时器，也可以用于产生 PWM
 
 5. RW007 有一个从机控制的 INT 引脚，需要占用一个 IRQ 通道，下图以 P101 为例的配置如下：
 
-
-
 ![image-20211108183724282](picture/rw007_int.png)
 
 6. 配置完成，检查 MDK 工程中是否加入了必要的文件
@@ -254,6 +265,5 @@ GPT 定时器在该芯片中可作为通用定时器，也可以用于产生 PWM
    ![image-20211109104735733](picture/rw007_wifijoin.png)
    
    使用 `ping rt-thread.com` 测试网络连接：
-
 
 ![image-20211109104700939](picture/rw007_ping.png)

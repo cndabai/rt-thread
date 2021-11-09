@@ -64,21 +64,21 @@ static rt_err_t ra_wait_complete(rt_event_t event, const char bus_name[RT_NAME_M
 {
     rt_uint32_t recved = 0x00;
 
-    if(bus_name[3] == '0')
+    if (bus_name[3] == '0')
     {
-        return rt_event_recv(event, 
-                            RA_SPI0_EVENT,
-                            RT_EVENT_FLAG_OR|RT_EVENT_FLAG_CLEAR,
-                            RT_WAITING_FOREVER,
-                            &recved);
+        return rt_event_recv(event,
+                             RA_SPI0_EVENT,
+                             RT_EVENT_FLAG_OR | RT_EVENT_FLAG_CLEAR,
+                             RT_WAITING_FOREVER,
+                             &recved);
     }
-    else if(bus_name[3] == '1')
+    else if (bus_name[3] == '1')
     {
-        return rt_event_recv(event, 
-                            RA_SPI1_EVENT,
-                            RT_EVENT_FLAG_OR|RT_EVENT_FLAG_CLEAR,
-                            RT_WAITING_FOREVER,
-                            &recved);
+        return rt_event_recv(event,
+                             RA_SPI1_EVENT,
+                             RT_EVENT_FLAG_OR | RT_EVENT_FLAG_CLEAR,
+                             RT_WAITING_FOREVER,
+                             &recved);
     }
     return -RT_EINVAL;
 }
@@ -263,7 +263,7 @@ int ra_hw_spi_init(void)
         }
     }
 
-    if(RT_EOK == rt_event_init(&complete_event, "ra_spi", RT_IPC_FLAG_PRIO))
+    if (RT_EOK == rt_event_init(&complete_event, "ra_spi", RT_IPC_FLAG_PRIO))
     {
         LOG_E("SPI transfer event init fail!");
         return -RT_ERROR;

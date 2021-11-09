@@ -181,6 +181,20 @@ menu "Hardware Drivers Config"
                     default n
             endif
 
+        menuconfig BSP_USING_CAN
+            bool "Enable CAN"
+            default n
+            select RT_USING_CAN
+            if BSP_USING_CAN
+                config BSP_USING_CAN0
+                    bool "Enable CAN0"
+                    default n
+
+                config BSP_USING_CAN1
+                    bool "Enable CAN1"
+                    default n
+            endif
+
     endmenu
 
     menu "Board extended module Drivers"
