@@ -17,10 +17,10 @@
 
 - 添加 Device Partition Manager，添加步骤同上。
 
-1. 输入命令名称: `Device Partition Manager`
-2. Command: 在安装路径选中 `rasc.exe`
-3. Initial Folder : `$P`
-4. Arguments: `-application com.renesas.cdt.ddsc.dpm.ui.dpmapplication configuration.xml "SL%L"` 
+1. 输入命令名称:`Device Partition Manager`
+2. Command: 在安装路径选中`rasc.exe`
+3. Initial Folder :`$P`
+4. Arguments:`-application com.renesas.cdt.ddsc.dpm.ui.dpmapplication configuration.xml "SL%L"`
 
 > PS：以上相关操作也可以在 FSP 的说明文档中找到。
 >
@@ -33,7 +33,6 @@
 使用 FSP 配置完成后如果有新的文件添加进工程中，不会马上添加进去。需要先编译一次，如果弹出如下提醒，选择 “是” 然后再次编译即可。
 
 ![img](picture/import_changes.png)
-
 
 ## UART
 
@@ -115,7 +114,7 @@
 
 ![image-20211019152627412](picture/rtc_config.png)
 
-3. 如何在 ENV 中打开 RTC 以及[ RTC 接口使用说明](https://www.rt-thread.org/document/site/#/rt-thread-version/rt-thread-standard/programming-manual/device/rtc/rtc) 
+3. 如何在 ENV 中打开 RTC 以及[ RTC 接口使用说明](https://www.rt-thread.org/document/site/#/rt-thread-version/rt-thread-standard/programming-manual/device/rtc/rtc)
 
 ![image-20211027181550233](picture/rtc_env.png)
 
@@ -142,6 +141,7 @@
 2. 配置 channel、name、Clock Phase、Clock Polarity、Callback、 SPI Mode 等参数，波特率在代码中可通过 API 修改，这里可以设置一个默认值。
 
 ![img](picture/spi.png)
+
 
 3. 如何在 ENV 中打开 SPI 以及 [SPI 接口使用说明](https://www.rt-thread.org/document/site/#/rt-thread-version/rt-thread-standard/programming-manual/device/spi/spi)
 
@@ -188,7 +188,6 @@ GPT 定时器在该芯片中可作为通用定时器，也可以用于产生 PWM
 1. 添加 GPT 设备
 
    ![img](./picture/add_gpt1.png)
-   
 2. 配置通道
 
    ![img](./picture/add_gpt2.png)
@@ -200,13 +199,61 @@ GPT 定时器在该芯片中可作为通用定时器，也可以用于产生 PWM
    3. 设定 PWM 通道默认输出的占空比，这里为 50% 。
    4. 设定 GPT 通道下两个输出端口的使能状态。
    5. 此处设置 GPT 通道下两个输出端口各自对应的引脚。
-   
 3. 配置输出引脚
 
    ![img](./picture/add_gpt3.png)
 
    在完成上一步对 GPT 定时器的设置后，根据图示找到对应 GPT 通道输出引脚设置的界面（这里是 GPT3），将图中标号 **1** 处设置为 ``GTIOCA or GTIOCB`` ，并根据需要在图中标号 **2** 处设置 GPT 通道下两个输出端口各自对应的输出引脚。
-   
-   4. 在 menuconfig 中打开对应的通道，[RT-Thread 的 pwm 框架介绍](https://www.rt-thread.org/document/site/#/rt-thread-version/rt-thread-standard/programming-manual/device/pwm/pwm) 
-   
+
+   4. 在 menuconfig 中打开对应的通道，[RT-Thread 的 pwm 框架介绍](https://www.rt-thread.org/document/site/#/rt-thread-version/rt-thread-standard/programming-manual/device/pwm/pwm)
+
    ![image-20211103202216381](picture/pwm_env.png)
+
+
+
+
+
+## 使用 WiFi 模块 [RW007 ](https://github.com/RT-Thread-packages/rw007) 
+
+1. menuconfig 中打开驱动的 RW007 配置，默认使用了 SPI1 端口。所以需要打开 SPI1 总线。
+
+![image-20211108142335782](picture/drv_rw007.png)
+
+![image-20211108142453678](picture/rw007_spi.png)
+
+2. 软件包配置中找到 RW007，并修改为下图配置
+
+![image-20211108142805319](picture/rw007_pkg.png)
+
+3. 在设备驱动框架中打开 [WLAN 框架](https://www.rt-thread.org/document/site/#/rt-thread-version/rt-thread-standard/programming-manual/device/wlan/wlan)，在网络配置中打开 NETDEV 组件。
+
+![image-20211108143027485](picture/rw007_wlan.png)
+
+![image-20211108143712513](picture/rw007_netdev.png)
+
+4. FSP 中打开 SPI，下图以 SPI1 端口为例的配置如下：
+
+![image-20211108183631379](picture/rw007_spicfg.png)
+
+5. RW007 有一个从机控制的 INT 引脚，需要占用一个 IRQ 通道，下图以 P101 为例的配置如下：
+
+
+
+![image-20211108183724282](picture/rw007_int.png)
+
+6. 配置完成，检查 MDK 工程中是否加入了必要的文件
+
+![image-20211109102232233](picture/rw007_mdk.png)
+
+7. 编译下载，验证结果。系统启动会自动获取 RW007 的信息，输入`wifi scan` 命令扫描环境中的 WiFi 信号。[更多 WiFi 命令](https://www.rt-thread.org/document/site/#/rt-thread-version/rt-thread-standard/programming-manual/device/wlan/wlan?id=finsh-%e5%91%bd%e4%bb%a4) 
+
+   ![image-20211109103856130](picture/rw007_test.png)
+   
+   使用 `WiFi join` 命令连接 WiFi 热点 ：
+   
+   ![image-20211109104735733](picture/rw007_wifijoin.png)
+   
+   使用 `ping rt-thread.com` 测试网络连接：
+
+
+![image-20211109104700939](picture/rw007_ping.png)

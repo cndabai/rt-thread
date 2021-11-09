@@ -185,5 +185,37 @@ menu "Hardware Drivers Config"
 
     menu "Board extended module Drivers"
 
+        menuconfig BSP_USING_RW007
+            bool "Enable RW007"
+            default n
+            select PKG_USING_RW007
+            select BSP_USING_SPI
+
+        if BSP_USING_RW007
+            config RW007_SPI_BUS_NAME
+                string "RW007 BUS NAME"
+                default "spi1"
+
+            config RW007_CS_PIN
+                hex "(HEX)CS pin index"
+                default 0x040D
+
+            config RW007_BOOT0_PIN
+                hex "(HEX)BOOT0 pin index (same as spi clk pin)"
+                default 0x040C
+
+            config RW007_BOOT1_PIN
+                hex "(HEX)BOOT1 pin index (same as spi cs pin)"
+                default 0x040D
+
+            config RW007_INT_BUSY_PIN
+                hex "(HEX)INT/BUSY pin index"
+                default 0x0101
+
+            config RW007_RST_PIN
+                hex "(HEX)RESET pin index"
+                default 0x0102
+        endif
+
     endmenu
 endmenu
