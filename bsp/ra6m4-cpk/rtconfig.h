@@ -86,7 +86,10 @@
 #define RT_USING_SERIAL
 #define RT_USING_SERIAL_V2
 #define RT_SERIAL_USING_DMA
+#define RT_USING_I2C
+#define RT_USING_I2C_BITOPS
 #define RT_USING_PIN
+#define RT_USING_SPI
 
 /* Using USB */
 
@@ -103,9 +106,51 @@
 
 /* Network interface device */
 
+#define NETDEV_USING_PING
 
 /* light weight TCP/IP stack */
 
+#define RT_USING_LWIP
+#define RT_USING_LWIP203
+#define RT_LWIP_MEM_ALIGNMENT 4
+#define RT_LWIP_IGMP
+#define RT_LWIP_ICMP
+#define RT_LWIP_DNS
+#define RT_LWIP_DHCP
+#define IP_SOF_BROADCAST 1
+#define IP_SOF_BROADCAST_RECV 1
+
+/* Static IPv4 Address */
+
+#define RT_LWIP_IPADDR "192.168.1.30"
+#define RT_LWIP_GWADDR "192.168.1.1"
+#define RT_LWIP_MSKADDR "255.255.255.0"
+#define RT_LWIP_UDP
+#define RT_LWIP_TCP
+#define RT_LWIP_RAW
+#define RT_MEMP_NUM_NETCONN 8
+#define RT_LWIP_PBUF_NUM 16
+#define RT_LWIP_RAW_PCB_NUM 4
+#define RT_LWIP_UDP_PCB_NUM 4
+#define RT_LWIP_TCP_PCB_NUM 4
+#define RT_LWIP_TCP_SEG_NUM 40
+#define RT_LWIP_TCP_SND_BUF 8196
+#define RT_LWIP_TCP_WND 8196
+#define RT_LWIP_TCPTHREAD_PRIORITY 10
+#define RT_LWIP_TCPTHREAD_MBOX_SIZE 8
+#define RT_LWIP_TCPTHREAD_STACKSIZE 1024
+#define RT_LWIP_ETHTHREAD_PRIORITY 12
+#define RT_LWIP_ETHTHREAD_STACKSIZE 1024
+#define RT_LWIP_ETHTHREAD_MBOX_SIZE 8
+#define LWIP_NETIF_STATUS_CALLBACK 1
+#define LWIP_NETIF_LINK_CALLBACK 1
+#define SO_REUSE 1
+#define LWIP_SO_RCVTIMEO 1
+#define LWIP_SO_SNDTIMEO 1
+#define LWIP_SO_RCVBUF 1
+#define LWIP_SO_LINGER 0
+#define LWIP_NETIF_LOOPBACK 0
+#define RT_LWIP_USING_PING
 
 /* AT commands */
 
@@ -131,6 +176,16 @@
 
 /* Wiced WiFi */
 
+#define PKG_USING_RW007
+#define PKG_USING_RW007_LATEST_VERSION
+#define RW007_NOT_USE_EXAMPLE_DRIVERS
+#define RW007_SPI_MAX_HZ 30000000
+#define RW007_SPI_BUS_NAME "spi1"
+#define RW007_CS_PIN 0x040D
+#define RW007_BOOT0_PIN 0x040C
+#define RW007_BOOT1_PIN 0x040D
+#define RW007_INT_BUSY_PIN 0x0101
+#define RW007_RST_PIN 0x0102
 
 /* IoT Cloud */
 
@@ -143,6 +198,11 @@
 
 /* multimedia packages */
 
+/* LVGL: powerful and easy-to-use embedded GUI library */
+
+
+/* u8g2: a monochrome graphic library */
+
 
 /* tools packages */
 
@@ -150,6 +210,9 @@
 /* system packages */
 
 /* acceleration: Assembly language or algorithmic acceleration packages */
+
+
+/* CMSIS: ARM Cortex-M Microcontroller Software Interface Standard */
 
 
 /* Micrium: Micrium software products porting for RT-Thread */
@@ -162,7 +225,6 @@
 
 
 /* miscellaneous packages */
-
 
 /* samples: kernel and components samples */
 
@@ -183,9 +245,12 @@
 #define BSP_USING_UART7
 #define BSP_UART7_RX_BUFSIZE 256
 #define BSP_UART7_TX_BUFSIZE 0
+#define BSP_USING_SPI
+#define BSP_USING_SPI1
 
 /* Board extended module Drivers */
 
+#define BSP_USING_RW007
 #define SOC_FAMILY_RENESAS
 
 #endif

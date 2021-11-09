@@ -228,15 +228,15 @@ GPT 定时器在该芯片中可作为通用定时器，也可以用于产生 PWM
 
 ## 使用 WiFi 模块 [RW007 ](https://github.com/RT-Thread-packages/rw007) 
 
-1. menuconfig 中打开驱动的 RW007 配置，默认使用了 SPI1 端口。所以需要打开 SPI1 总线。
+1. 软件包配置中找到 RW007，并修改为下图配置
 
-![image-20211108142335782](picture/drv_rw007.png)
+![image-20211108142805319](picture/rw007_pkg.png)
+
+2. menuconfig 中打开驱动的 RW007 配置，默认使用了 SPI1 端口。所以需要打开 SPI1 总线。
 
 ![image-20211108142453678](picture/rw007_spi.png)
 
-2. 软件包配置中找到 RW007，并修改为下图配置
-
-![image-20211108142805319](picture/rw007_pkg.png)
+![image-20211108142335782](picture/drv_rw007.png)
 
 3. 在设备驱动框架中打开 [WLAN 框架](https://www.rt-thread.org/document/site/#/rt-thread-version/rt-thread-standard/programming-manual/device/wlan/wlan)，在网络配置中打开 NETDEV 组件。
 
@@ -256,14 +256,16 @@ GPT 定时器在该芯片中可作为通用定时器，也可以用于产生 PWM
 
 ![image-20211109102232233](picture/rw007_mdk.png)
 
-7. 编译下载，验证结果。系统启动会自动获取 RW007 的信息，输入`wifi scan` 命令扫描环境中的 WiFi 信号。[更多 WiFi 命令](https://www.rt-thread.org/document/site/#/rt-thread-version/rt-thread-standard/programming-manual/device/wlan/wlan?id=finsh-%e5%91%bd%e4%bb%a4) 
+7. 编译下载，验证结果。
 
-   ![image-20211109103856130](picture/rw007_test.png)
-   
-   使用 `WiFi join` 命令连接 WiFi 热点 ：
-   
-   ![image-20211109104735733](picture/rw007_wifijoin.png)
-   
-   使用 `ping rt-thread.com` 测试网络连接：
+系统启动会自动获取 RW007 的信息，输入`wifi scan` 命令扫描环境中的 WiFi 信号。[更多 WiFi 命令](https://www.rt-thread.org/document/site/#/rt-thread-version/rt-thread-standard/programming-manual/device/wlan/wlan?id=finsh-%e5%91%bd%e4%bb%a4)
+
+![image-20211109103856130](picture/rw007_test.png)
+
+使用 `WiFi join` 命令连接 WiFi 热点 ：
+
+![image-20211109104735733](picture/rw007_wifijoin.png)
+
+使用 `ping rt-thread.com` 测试网络连接：
 
 ![image-20211109104700939](picture/rw007_ping.png)

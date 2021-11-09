@@ -41,7 +41,12 @@
 | SPI                | 支持               |                |
 | FLASH              | 支持               |                |
 | PWM                | 支持               |                |
+| CAN                | 支持               |                |
 | 持续更新中...      |                    |                |
+| **外接外设** | **支持情况** | **备注** |
+| WiFi        | 支持        |  [RW007 WiFi 网络模块](https://github.com/RT-Thread-packages/rw007)  |
+| 温湿度传感器   | 支持       |  [HS300x 温湿度模块](https://github.com/Guozhanxin/hs300x) |
+
 
 ## 使用说明
 

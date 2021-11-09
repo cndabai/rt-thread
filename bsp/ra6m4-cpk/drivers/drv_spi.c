@@ -165,7 +165,7 @@ static rt_err_t ra_hw_spi_configure(struct rt_spi_device *device,
     spi_extended_cfg_t *spi_cfg = (spi_extended_cfg_t *)spi_dev->ra_spi_handle_t->spi_cfg_t->p_extend;
 
     /**< Configure Select Line */
-    rt_pin_write(spi_dev->cs_pin, BSP_IO_LEVEL_HIGH);
+    rt_pin_write(spi_dev->cs_pin, PIN_HIGH);
 
     /**< config bitrate */
     R_SPI_CalculateBitrate(spi_dev->rt_spi_cfg_t->max_hz, &spi_cfg->spck_div);
@@ -194,9 +194,9 @@ static rt_uint32_t ra_spixfer(struct rt_spi_device *device, struct rt_spi_messag
     if (message->cs_take && !(device->config.mode & RT_SPI_NO_CS))
     {
         if (device->config.mode & RT_SPI_CS_HIGH)
-            rt_pin_write(spi_dev->cs_pin, BSP_IO_LEVEL_HIGH);
+            rt_pin_write(spi_dev->cs_pin, PIN_HIGH);
         else
-            rt_pin_write(spi_dev->cs_pin, BSP_IO_LEVEL_LOW);
+            rt_pin_write(spi_dev->cs_pin, PIN_LOW);
     }
 
     if (message->length > 0)
@@ -221,9 +221,9 @@ static rt_uint32_t ra_spixfer(struct rt_spi_device *device, struct rt_spi_messag
     if (message->cs_release && !(device->config.mode & RT_SPI_NO_CS))
     {
         if (device->config.mode & RT_SPI_CS_HIGH)
-            rt_pin_write(spi_dev->cs_pin, BSP_IO_LEVEL_LOW);
+            rt_pin_write(spi_dev->cs_pin, PIN_LOW);
         else
-            rt_pin_write(spi_dev->cs_pin, BSP_IO_LEVEL_HIGH);
+            rt_pin_write(spi_dev->cs_pin, PIN_HIGH);
     }
     return err;
 }
@@ -263,7 +263,7 @@ int ra_hw_spi_init(void)
         }
     }
 
-    if (RT_EOK == rt_event_init(&complete_event, "ra_spi", RT_IPC_FLAG_PRIO))
+    if (RT_EOK != rt_event_init(&complete_event, "ra_spi", RT_IPC_FLAG_PRIO))
     {
         LOG_E("SPI transfer event init fail!");
         return -RT_ERROR;
