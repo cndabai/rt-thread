@@ -47,6 +47,9 @@ if GetDepend(['BSP_USING_PWM']):
 if GetDepend(['BSP_USING_CAN']):
     src += ['drv_can.c']
 
+if GetDepend(['BSP_USING_SDHI']):
+    src += ['drv_sdhi.c']
+
 path =  [cwd]
 path += [cwd + '/config']
 

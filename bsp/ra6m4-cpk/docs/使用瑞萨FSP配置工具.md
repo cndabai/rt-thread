@@ -209,6 +209,29 @@ GPT 定时器在该芯片中可作为通用定时器，也可以用于产生 PWM
 
    ![image-20211103202216381](picture/pwm_env.png)
 
+## SDHI
+
+1. 添加sdhi驱动
+
+![img](./picture/sdhi_config.png)
+
+2. 添加DMAC
+
+   ![](./picture/dmac_config.png)
+
+3. 设置DMAC中断
+
+   ![](./picture/dmac_int.png)
+
+4. 设置SDHI中断和引脚
+
+   ![](./picture/sdhi_config1.png)
+
+5. 在ENV中打开SDHI
+
+   ![](./picture/sdhi_env.png)
+6. 参考RT-Thread DFS使用手册[虚拟文件系统 (rt-thread.org)](https://www.rt-thread.org/document/site/#/rt-thread-version/rt-thread-standard/programming-manual/filesystem/filesystem)
+
 ## CAN
 
 1. 添加CAN
