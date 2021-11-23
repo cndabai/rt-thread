@@ -18,9 +18,9 @@
 #include <lwp.h>
 #endif
 
-#ifdef RT_USING_POSIX
+#ifdef RT_USING_POSIX_STDIO
 #include <libc.h>
-#endif /* RT_USING_POSIX */
+#endif /* RT_USING_POSIX_STDIO */
 
 /* Global variables */
 const struct dfs_filesystem_ops *filesystem_operation_table[DFS_FILESYSTEM_TYPES_MAX];
@@ -63,7 +63,7 @@ int dfs_init(void)
     memset(&_fdtab, 0, sizeof(_fdtab));
 
     /* create device filesystem lock */
-    rt_mutex_init(&fslock, "fslock", RT_IPC_FLAG_FIFO);
+    rt_mutex_init(&fslock, "fslock", RT_IPC_FLAG_PRIO);
 
 #ifdef DFS_USING_WORKDIR
     /* set current working directory */
@@ -216,10 +216,10 @@ struct dfs_fd *fd_get(int fd)
     struct dfs_fd *d;
     struct dfs_fdtable *fdt;
 
-#ifdef RT_USING_POSIX
+#ifdef RT_USING_POSIX_STDIO
     if ((0 <= fd) && (fd <= 2))
         fd = libc_stdio_get_console();
-#endif /* RT_USING_POSIX */
+#endif /* RT_USING_POSIX_STDIO */
 
     fdt = dfs_fdtable_get();
     fd = fd - DFS_FD_OFFSET;
