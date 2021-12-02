@@ -37,7 +37,9 @@ static char *const sensor_name_str[] =
     "eco2_",     /* eCO2 sensor       */
     "gnss_",     /* GPS/GNSS sensor   */
     "tof_",      /* TOF sensor        */
-    "spo2_"      /* SpO2 sensor       */
+    "spo2_",     /* SpO2 sensor       */
+    "iaq_",      /* IAQ sensor        */
+    "etoh_",     /* EtOH sensor       */
 };
 
 /* Sensor interrupt correlation function */

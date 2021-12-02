@@ -74,6 +74,12 @@ static void sensor_show_data(rt_size_t num, rt_sensor_t sensor, struct rt_sensor
     case RT_SENSOR_CLASS_ECO2:
         LOG_I("num:%3d, eco2:%5d ppm, timestamp:%5d", num, sensor_data->data.eco2, sensor_data->timestamp);
         break;
+    case RT_SENSOR_CLASS_IAQ:
+        LOG_I("num:%3d, IAQ:%5d.%d , timestamp:%5d", num, sensor_data->data.iaq / 10, sensor_data->data.iaq % 10, sensor_data->timestamp);
+        break;
+    case RT_SENSOR_CLASS_ETOH:
+        LOG_I("num:%3d, EtOH:%5d.%03d ppm, timestamp:%5d", num, sensor_data->data.etoh / 1000, sensor_data->data.etoh % 1000, sensor_data->timestamp);
+        break;
     default:
         break;
     }
