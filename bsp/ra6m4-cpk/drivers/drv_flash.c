@@ -64,11 +64,11 @@ int _flash_read(rt_uint32_t addr, rt_uint8_t *buf, size_t size)
 {
     size_t i;
 
-    if ((addr + size) > FLASH_HP_CF_BLCOK_10 + BSP_FEATURE_FLASH_HP_CF_REGION1_BLOCK_SIZE)
-    {
-        LOG_E("read outrange flash size! addr is (0x%p)", (void *)(addr + size));
-        return -1;
-    }
+    // if ((addr + size) > FLASH_HP_CF_BLCOK_10 + BSP_FEATURE_FLASH_HP_CF_REGION1_BLOCK_SIZE)
+    // {
+    //     LOG_E("read outrange flash size! addr is (0x%p)", (void *)(addr + size));
+    //     return -1;
+    // }
 
     for (i = 0; i < size; i++, buf++, addr++)
     {
@@ -96,11 +96,11 @@ int _flash_write(rt_uint32_t addr, const rt_uint8_t *buf, size_t size)
     fsp_err_t err = FSP_SUCCESS;
     size_t written_size = 0;
 
-    if ((addr + size) > FLASH_HP_CF_BLCOK_10 + BSP_FEATURE_FLASH_HP_CF_REGION1_BLOCK_SIZE)
-    {
-        LOG_E("write outrange flash size! addr is (0x%p)", (void *)(addr + size));
-        return -RT_EINVAL;
-    }
+    // if ((addr + size) > FLASH_HP_CF_BLCOK_10 + BSP_FEATURE_FLASH_HP_CF_REGION1_BLOCK_SIZE)
+    // {
+    //     LOG_E("write outrange flash size! addr is (0x%p)", (void *)(addr + size));
+    //     return -RT_EINVAL;
+    // }
 
     if (size % BSP_FEATURE_FLASH_HP_CF_WRITE_SIZE)
     {
@@ -111,6 +111,7 @@ int _flash_write(rt_uint32_t addr, const rt_uint8_t *buf, size_t size)
     while (written_size < size)
     {
         level = rt_hw_interrupt_disable();
+        R_FLASH_HP_Reset(&g_flash_ctrl);
         /* Write code flash data*/
         err = R_FLASH_HP_Write(&g_flash_ctrl, (uint32_t)(buf + written_size), addr + written_size, BSP_FEATURE_FLASH_HP_CF_WRITE_SIZE);
         rt_hw_interrupt_enable(level);
@@ -160,6 +161,7 @@ int _flash_erase_8k(rt_uint32_t addr, size_t size)
     }
 
     level = rt_hw_interrupt_disable();
+    R_FLASH_HP_Reset(&g_flash_ctrl);
     /* Erase Block */
     err = R_FLASH_HP_Erase(&g_flash_ctrl, RT_ALIGN_DOWN(addr, FLASH_HP_CF_BLOCK_SIZE_8KB), (size - 1) / BSP_FEATURE_FLASH_HP_CF_REGION0_BLOCK_SIZE + 1);
     rt_hw_interrupt_enable(level);
@@ -179,11 +181,11 @@ int _flash_erase_128k(rt_uint32_t addr, size_t size)
     fsp_err_t err = FSP_SUCCESS;
     rt_base_t level;
 
-    if ((addr + size) > FLASH_HP_CF_BLCOK_10 + BSP_FEATURE_FLASH_HP_CF_REGION1_BLOCK_SIZE)
-    {
-        LOG_E("ERROR: erase outrange flash size! addr is (0x%p)\n", (void *)(addr + size));
-        return -RT_EINVAL;
-    }
+    // if ((addr + size) > FLASH_HP_CF_BLCOK_10 + BSP_FEATURE_FLASH_HP_CF_REGION1_BLOCK_SIZE)
+    // {
+    //     LOG_E("ERROR: erase outrange flash size! addr is (0x%p)\n", (void *)(addr + size));
+    //     return -RT_EINVAL;
+    // }
 
     if (size < 1)
     {
@@ -191,6 +193,7 @@ int _flash_erase_128k(rt_uint32_t addr, size_t size)
     }
 
     level = rt_hw_interrupt_disable();
+    R_FLASH_HP_Reset(&g_flash_ctrl);
     /* Erase Block */
     err = R_FLASH_HP_Erase(&g_flash_ctrl, RT_ALIGN_DOWN(addr, FLASH_HP_CF_BLOCK_SIZE_32KB), (size - 1) / BSP_FEATURE_FLASH_HP_CF_REGION1_BLOCK_SIZE + 1);
     rt_hw_interrupt_enable(level);
@@ -217,7 +220,7 @@ static int fal_flash_erase_8k(long offset, size_t size);
 static int fal_flash_erase_128k(long offset, size_t size);
 
 const struct fal_flash_dev _onchip_flash_8k = { "onchip_flash_8k", FLASH_HP_CF_BLCOK_0, FLASH_HP_CF_BLOCK_8, (8 * 1024), {_flash_init, fal_flash_read_8k, fal_flash_write_8k, fal_flash_erase_8k} };
-const struct fal_flash_dev _onchip_flash_128k = { "onchip_flash_128k", FLASH_HP_CF_BLOCK_8, 32 * 3 * 1024, (128 * 1024), {_flash_init, fal_flash_read_128k, fal_flash_write_128k, fal_flash_erase_128k} };
+const struct fal_flash_dev _onchip_flash_128k = { "onchip_flash_128k", FLASH_HP_CF_BLOCK_8, 32 * 30 * 1024, (32 * 1024), {_flash_init, fal_flash_read_128k, fal_flash_write_128k, fal_flash_erase_128k} };
 
 static int fal_flash_read_8k(long offset, rt_uint8_t *buf, size_t size)
 {
@@ -251,7 +254,7 @@ static int fal_flash_erase_128k(long offset, size_t size)
 
 int flash_test(void)
 {
-#define TEST_OFF 0x10000
+#define TEST_OFF (_onchip_flash_128k.len - BSP_FEATURE_FLASH_HP_CF_REGION1_BLOCK_SIZE)
     const struct fal_partition *param;
     uint8_t write_buffer[BSP_FEATURE_FLASH_HP_CF_WRITE_SIZE] = {0};
     uint8_t read_buffer[BSP_FEATURE_FLASH_HP_CF_WRITE_SIZE] = {0};
