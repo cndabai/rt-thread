@@ -136,7 +136,8 @@ static rt_err_t local_control(struct rt_sensor_device *sensor, int cmd, void *ar
     LOG_D("Undefined control");
     return RT_ERROR;
 }
-static struct rt_sensor_ops local_ops = {
+static struct rt_sensor_ops local_ops =
+{
     .fetch_data = local_fetch_data,
     .control = local_control
 };
@@ -147,7 +148,7 @@ static rt_err_t rt_sensor_open(rt_device_t dev, rt_uint16_t oflag)
     rt_sensor_t sensor = (rt_sensor_t)dev;
     RT_ASSERT(dev != RT_NULL);
     rt_err_t res = RT_EOK;
-    rt_err_t (*local_ctrl)(struct rt_sensor_device *sensor, int cmd, void *arg) =  local_control;
+    rt_err_t (*local_ctrl)(struct rt_sensor_device * sensor, int cmd, void *arg) =  local_control;
 
     if (sensor->module)
     {
@@ -313,7 +314,7 @@ static rt_size_t rt_sensor_read(rt_device_t dev, rt_off_t pos, void *buf, rt_siz
         if (sensor->ops->fetch_data !=  RT_NULL)
         {
             result = sensor->ops->fetch_data(sensor, buf, len);
-        }        
+        }
     }
 
     if (sensor->module)
@@ -361,7 +362,7 @@ static rt_err_t rt_sensor_control(rt_device_t dev, int cmd, void *args)
         {
             sensor->config.range = (rt_int32_t)args;
             LOG_D("set range %d", sensor->config.range);
-        }    
+        }
         break;
     case RT_SENSOR_CTRL_SET_ODR:
         /* Configuration data output rate */
