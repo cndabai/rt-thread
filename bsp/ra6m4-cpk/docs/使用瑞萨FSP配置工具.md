@@ -230,7 +230,16 @@ GPT 定时器在该芯片中可作为通用定时器，也可以用于产生 PWM
 5. 在ENV中打开SDHI
 
    ![](./picture/sdhi_env.png)
-6. 参考RT-Thread DFS使用手册[虚拟文件系统 (rt-thread.org)](https://www.rt-thread.org/document/site/#/rt-thread-version/rt-thread-standard/programming-manual/filesystem/filesystem)
+   
+6. 在ENV中配置DFS，添加文件系统，如FatFS
+
+   ![](picture/sdhi_dfs.png)
+
+7. 在命令行中，使用 `mkfs sd0 -t elm` 格式化sd卡
+
+8. 在命令行中，使用 `mount sd0 / elm` 将sd0挂载到 `/`
+
+9. 参考RT-Thread DFS使用手册[虚拟文件系统 (rt-thread.org)](https://www.rt-thread.org/document/site/#/rt-thread-version/rt-thread-standard/programming-manual/filesystem/filesystem)
 
 ## CAN
 

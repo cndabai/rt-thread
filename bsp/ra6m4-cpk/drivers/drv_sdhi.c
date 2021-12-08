@@ -197,7 +197,7 @@ rt_err_t transfer_write(sdhi_instance_ctrl_t *const p_ctrl,
         /* If the pointer is not 4-byte aligned or the number of bytes is not a multiple of 4, use a temporary buffer.
          * Transfer the first block to the temporary buffer before enabling the transfer.  Subsequent blocks will be
          * transferred from the user buffer to the temporary buffer in an interrupt after each block transfer. */
-        memcpy((void *)&p_ctrl->aligned_buff[0], p_data, bytes);
+        rt_memcpy((void *)&p_ctrl->aligned_buff[0], p_data, bytes);
         p_info->p_src = &p_ctrl->aligned_buff[0];
 
         p_ctrl->transfer_block_current = 1U;
