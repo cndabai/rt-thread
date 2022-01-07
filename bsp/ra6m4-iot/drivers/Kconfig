@@ -60,7 +60,7 @@ menu "Hardware Drivers Config"
                     endif
                 menuconfig BSP_USING_UART7
                     bool "Enable UART7 (Console)"
-                    default y
+                    default n
                     if BSP_USING_UART7
                         config BSP_UART7_RX_USING_DMA
                             bool "Enable UART7 RX DMA"

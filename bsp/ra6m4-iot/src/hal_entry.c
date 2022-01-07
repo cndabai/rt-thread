@@ -13,7 +13,7 @@
 #include "hal_data.h"
 #include <rtdevice.h>
 
-#define LED3_PIN    BSP_IO_PORT_01_PIN_06
+#define LED3_PIN    BSP_IO_PORT_01_PIN_14
 #define USER_INPUT	"P105"
 
 void hal_entry(void)
