@@ -92,8 +92,15 @@ static rt_err_t ra_write_message(struct rt_spi_device *device, const void *send_
     rt_err_t err = RT_EOK;
     struct ra_spi *spi_dev =  rt_container_of(device->bus, struct ra_spi, bus);
 
+    spi_bit_width_t bit_width;
+    if(spi_dev->rt_spi_cfg_t->data_width == 1)
+        bit_width = SPI_BIT_WIDTH_8_BITS;
+    else if(spi_dev->rt_spi_cfg_t->data_width == 2)
+        bit_width = SPI_BIT_WIDTH_16_BITS;
+    else if(spi_dev->rt_spi_cfg_t->data_width == 4)
+        bit_width = SPI_BIT_WIDTH_32_BITS;
     /**< send msessage */
-    err = R_SPI_Write((spi_ctrl_t *)spi_dev->ra_spi_handle_t->spi_ctrl_t, send_buf, len, spi_dev->rt_spi_cfg_t->data_width);
+    err = R_SPI_Write((spi_ctrl_t *)spi_dev->ra_spi_handle_t->spi_ctrl_t, send_buf, len, bit_width);
     if (RT_EOK != err)
     {
         LOG_E("%s write failed.", spi_dev->ra_spi_handle_t->bus_name);
@@ -113,8 +120,15 @@ static rt_err_t ra_read_message(struct rt_spi_device *device, void *recv_buf, co
     rt_err_t err = RT_EOK;
     struct ra_spi *spi_dev =  rt_container_of(device->bus, struct ra_spi, bus);
 
+    spi_bit_width_t bit_width;
+    if(spi_dev->rt_spi_cfg_t->data_width == 1)
+        bit_width = SPI_BIT_WIDTH_8_BITS;
+    else if(spi_dev->rt_spi_cfg_t->data_width == 2)
+        bit_width = SPI_BIT_WIDTH_16_BITS;
+    else if(spi_dev->rt_spi_cfg_t->data_width == 4)
+        bit_width = SPI_BIT_WIDTH_32_BITS;
     /**< receive message */
-    err = R_SPI_Read((spi_ctrl_t *)spi_dev->ra_spi_handle_t->spi_ctrl_t, recv_buf, len, spi_dev->rt_spi_cfg_t->data_width);
+    err = R_SPI_Read((spi_ctrl_t *)spi_dev->ra_spi_handle_t->spi_ctrl_t, recv_buf, len, bit_width);
     if (RT_EOK != err)
     {
         LOG_E("\n%s write failed.\n", spi_dev->ra_spi_handle_t->bus_name);
@@ -133,8 +147,15 @@ static rt_err_t ra_write_read_message(struct rt_spi_device *device, struct rt_sp
     rt_err_t err = RT_EOK;
     struct ra_spi *spi_dev =  rt_container_of(device->bus, struct ra_spi, bus);
 
+    spi_bit_width_t bit_width;
+    if(spi_dev->rt_spi_cfg_t->data_width == 1)
+        bit_width = SPI_BIT_WIDTH_8_BITS;
+    else if(spi_dev->rt_spi_cfg_t->data_width == 2)
+        bit_width = SPI_BIT_WIDTH_16_BITS;
+    else if(spi_dev->rt_spi_cfg_t->data_width == 4)
+        bit_width = SPI_BIT_WIDTH_32_BITS;
     /**< write and receive message */
-    err = R_SPI_WriteRead((spi_ctrl_t *)spi_dev->ra_spi_handle_t->spi_ctrl_t, message->send_buf, message->recv_buf, message->length, spi_dev->rt_spi_cfg_t->data_width);
+    err = R_SPI_WriteRead((spi_ctrl_t *)spi_dev->ra_spi_handle_t->spi_ctrl_t, message->send_buf, message->recv_buf, message->length, bit_width);
     if (RT_EOK != err)
     {
         LOG_E("%s write and read failed.", spi_dev->ra_spi_handle_t->bus_name);
