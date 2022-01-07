@@ -18,6 +18,17 @@
 extern "C" {
 #endif
 
+#if defined(BSP_USING_UART6)
+#ifndef UART6_CONFIG
+#define UART6_CONFIG                                                \
+    {                                                               \
+        .name = "uart6",                                            \
+        .p_api_ctrl = &g_uart6_ctrl,                                \
+        .p_cfg = &g_uart6_cfg,                                      \
+    }
+#endif /* UART6_CONFIG */
+#endif /* BSP_USING_UART6 */
+
 #if defined(BSP_USING_UART7)
 #ifndef UART7_CONFIG
 #define UART7_CONFIG                                                \

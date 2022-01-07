@@ -23,6 +23,10 @@
 
 static struct ra_uart_config uart_config[] =
 {
+#ifdef BSP_USING_UART6
+    UART6_CONFIG,
+#endif
+
 #ifdef BSP_USING_UART7
     UART7_CONFIG,
 #endif
@@ -34,6 +38,10 @@ static struct ra_uart_config uart_config[] =
 
 enum
 {
+#ifdef BSP_USING_UART6
+    UART6_INDEX,
+#endif
+
 #ifdef BSP_USING_UART7
     UART7_INDEX,
 #endif
@@ -48,6 +56,14 @@ static struct ra_uart uart_obj[sizeof(uart_config) / sizeof(uart_config[0])] = {
 static void ra_uart_get_config(void)
 {
     struct serial_configure config = RT_SERIAL_CONFIG_DEFAULT;
+
+#ifdef BSP_USING_UART6
+    uart_obj[UART6_INDEX].serial.config = config;
+    uart_obj[UART6_INDEX].uart_dma_flag = 0;
+
+    uart_obj[UART6_INDEX].serial.config.rx_bufsz = BSP_UART6_RX_BUFSIZE;
+    uart_obj[UART6_INDEX].serial.config.tx_bufsz = BSP_UART6_TX_BUFSIZE;
+#endif
 
 #ifdef BSP_USING_UART7
     uart_obj[UART7_INDEX].serial.config = config;
@@ -116,13 +132,12 @@ static int ra_uart_getc(struct rt_serial_device *serial)
     return RT_EOK;
 }
 
-
-#ifdef BSP_USING_UART7
-void uart7_isr_cb(uart_callback_args_t *p_args)
+#ifdef BSP_USING_UART6
+void uart6_isr_cb(uart_callback_args_t *p_args)
 {
     rt_interrupt_enter();
 
-    struct rt_serial_device *serial = &uart_obj[0].serial;
+    struct rt_serial_device *serial = &uart_obj[UART6_INDEX].serial;
     RT_ASSERT(serial != RT_NULL);
 
     if (UART_EVENT_RX_CHAR == p_args->event)
@@ -140,13 +155,35 @@ void uart7_isr_cb(uart_callback_args_t *p_args)
 }
 #endif
 
+#ifdef BSP_USING_UART7
+void uart7_isr_cb(uart_callback_args_t *p_args)
+{
+    rt_interrupt_enter();
+
+    struct rt_serial_device *serial = &uart_obj[UART7_INDEX].serial;
+    RT_ASSERT(serial != RT_NULL);
+
+    if (UART_EVENT_RX_CHAR == p_args->event)
+    {
+        struct rt_serial_rx_fifo *rx_fifo;
+        rx_fifo = (struct rt_serial_rx_fifo *) serial->serial_rx;
+        RT_ASSERT(rx_fifo != RT_NULL);
+
+        rt_ringbuffer_putchar(&(rx_fifo->rb), (rt_uint8_t)p_args->data);
+
+        rt_hw_serial_isr(serial, RT_SERIAL_EVENT_RX_IND);
+    }
+
+    rt_interrupt_leave();
+}
+#endif
 
 #ifdef BSP_USING_UART1
 void uart1_isr_cb(uart_callback_args_t *p_args)
 {
     rt_interrupt_enter();
 
-    struct rt_serial_device *serial = &uart_obj[1].serial;
+    struct rt_serial_device *serial = &uart_obj[UART1_INDEX].serial;
     RT_ASSERT(serial != RT_NULL);
 
     if (UART_EVENT_RX_CHAR == p_args->event)
